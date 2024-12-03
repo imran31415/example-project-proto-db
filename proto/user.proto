@@ -1,0 +1,116 @@
+syntax = "proto3";
+package example_db; // Adjust based on your project structure.
+
+import "google/protobuf/timestamp.proto";
+import "protobuf-db/proto/database_operations.proto";
+option go_package = "github.com/imran31415/example-project-proto-db/example_db";
+
+// Message for the User entity
+message User {
+    int32 user_id = 1 [
+        (db_annotations.db_column) = "user_id",
+        (db_annotations.db_primary_key) = true,
+        (db_annotations.db_column_type) = DB_TYPE_INT,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_auto_increment) = true
+    ];
+
+    string username = 2 [
+        (db_annotations.db_column) = "username",
+        (db_annotations.db_column_type) = DB_TYPE_VARCHAR,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_UNIQUE,
+        (db_annotations.db_character_set) = "utf8mb4",
+        (db_annotations.db_collate) = "utf8mb4_general_ci"
+    ];
+
+    string email = 3 [
+        (db_annotations.db_column) = "email",
+        (db_annotations.db_column_type) = DB_TYPE_VARCHAR,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_UNIQUE
+    ];
+
+    google.protobuf.Timestamp created_at = 4 [
+        (db_annotations.db_column) = "created_at",
+        (db_annotations.db_column_type) = DB_TYPE_DATETIME,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_default_function) = DB_DEFAULT_FUNCTION_NOW
+    ];
+
+    google.protobuf.Timestamp updated_at = 5 [
+        (db_annotations.db_column) = "updated_at",
+        (db_annotations.db_column_type) = DB_TYPE_DATETIME,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_default_function) = DB_DEFAULT_FUNCTION_NOW,
+        (db_annotations.db_update_action) = DB_UPDATE_ACTION_CURRENT_TIMESTAMP
+    ];
+}
+
+// Message for the Role entity
+message Role {
+    int32 role_id = 1 [
+        (db_annotations.db_column) = "role_id",
+        (db_annotations.db_primary_key) = true,
+        (db_annotations.db_column_type) = DB_TYPE_INT,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_auto_increment) = true
+    ];
+
+    string role_name = 2 [
+        (db_annotations.db_column) = "role_name",
+        (db_annotations.db_column_type) = DB_TYPE_VARCHAR,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_UNIQUE,
+        (db_annotations.db_character_set) = "utf8mb4",
+        (db_annotations.db_collate) = "utf8mb4_general_ci"
+    ];
+
+    google.protobuf.Timestamp created_at = 3 [
+        (db_annotations.db_column) = "created_at",
+        (db_annotations.db_column_type) = DB_TYPE_DATETIME,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_default_function) = DB_DEFAULT_FUNCTION_NOW
+    ];
+
+    google.protobuf.Timestamp updated_at = 4 [
+        (db_annotations.db_column) = "updated_at",
+        (db_annotations.db_column_type) = DB_TYPE_DATETIME,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_default_function) = DB_DEFAULT_FUNCTION_NOW,
+        (db_annotations.db_update_action) = DB_UPDATE_ACTION_CURRENT_TIMESTAMP
+    ];
+}
+
+// Message for the UserRole join table
+message UserRole {
+    // Composite unique constraint on user_id and role_id
+    option (db_annotations.db_unique_constraint) = "user_id,role_id";
+    
+    int32 user_id = 1 [
+        (db_annotations.db_column) = "user_id",
+        (db_annotations.db_column_type) = DB_TYPE_INT,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_foreign_key_table) = "User",
+        (db_annotations.db_foreign_key_column) = "user_id",
+        (db_annotations.db_on_delete) = DB_FOREIGN_KEY_ACTION_CASCADE,
+        (db_annotations.db_on_update) = DB_FOREIGN_KEY_ACTION_CASCADE
+    ];
+
+    int32 role_id = 2 [
+        (db_annotations.db_column) = "role_id",
+        (db_annotations.db_column_type) = DB_TYPE_INT,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_foreign_key_table) = "Role",
+        (db_annotations.db_foreign_key_column) = "role_id",
+        (db_annotations.db_on_delete) = DB_FOREIGN_KEY_ACTION_CASCADE,
+        (db_annotations.db_on_update) = DB_FOREIGN_KEY_ACTION_CASCADE
+    ];
+
+    google.protobuf.Timestamp assigned_at = 3 [
+        (db_annotations.db_column) = "assigned_at",
+        (db_annotations.db_column_type) = DB_TYPE_DATETIME,
+        (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
+        (db_annotations.db_default_function) = DB_DEFAULT_FUNCTION_NOW
+    ];
+}
