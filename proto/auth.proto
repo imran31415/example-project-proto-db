@@ -3,7 +3,7 @@ package example_db; // Adjust based on your project structure.
 
 import "google/protobuf/timestamp.proto";
 import "protobuf-db/proto/database_operations.proto";
-option go_package = "github.com/imran31415/example-project-proto-db/example_db";
+option go_package = "auth/";
 
 // Message for the User entity
 message User {
@@ -86,7 +86,7 @@ message Role {
 message UserRole {
     // Composite unique constraint on user_id and role_id
     option (db_annotations.db_unique_constraint) = "user_id,role_id";
-    
+
     int32 user_id = 1 [
         (db_annotations.db_column) = "user_id",
         (db_annotations.db_column_type) = DB_TYPE_INT,
