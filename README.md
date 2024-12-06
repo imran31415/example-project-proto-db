@@ -15,3 +15,8 @@ protoc -I . \
        ./proto/auth.proto
 
 ```
+
+
+This is an example project to show how to use protobuf-db and proto-db-translator. 
+
+See the proto/* files for the messages and annotations 
