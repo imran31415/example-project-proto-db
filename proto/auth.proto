@@ -3,7 +3,7 @@ package example_db; // Adjust based on your project structure.
 
 import "google/protobuf/timestamp.proto";
 import "protobuf-db/proto/database_operations.proto";
-option go_package = "github.com/imran31415/example-project-proto-db/example_db";
+option go_package = "auth/";
 
 // Message for the User entity
 message User {
@@ -113,4 +113,36 @@ message UserRole {
         (db_annotations.db_constraints) = DB_CONSTRAINT_NOT_NULL,
         (db_annotations.db_default_function) = DB_DEFAULT_FUNCTION_NOW
     ];
+}
+
+
+
+// Service definitions
+service AuthService {
+    // Create a user
+    rpc CreateUser (User) returns (User);
+    rpc DeleteUser (User) returns (User);
+
+
+    // Get a user by ID
+    rpc GetUserById (GetUserRequest) returns (User);
+    rpc GetRoleById (GetRoleRequest) returns (Role);
+
+    // Create a role
+    rpc CreateRole (Role) returns (Role);
+    rpc DeleteRole (Role) returns (Role);
+
+
+    // Assign a role to a user
+    rpc AssignRoleToUser (UserRole) returns (UserRole);
+}
+
+// Requests
+message GetUserRequest {
+    int32 user_id = 1;
+}
+
+// Requests
+message GetRoleRequest {
+    int32 role_id = 1;
 }
