@@ -2,6 +2,9 @@
 
 
 This is an example project to show how to use protobuf-db and proto-db-translator. 
+Check out the repositories:  
+- [protobuf-db](https://github.com/imran31415/protobuf-db)  
+- [proto-db-translator](https://github.com/imran31415/proto-db-translator)  
 
 1. See the proto/* files for the messages and annotations
 2. Example usage is in generate/main.go
