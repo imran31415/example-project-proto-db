@@ -62,7 +62,7 @@ We have created a **prototype** to demonstrate this approach:
 
 Here is an example of a `User` entity:  
 
-\`\`\`proto
+```
 syntax = "proto3";
 
 package auth;
@@ -95,7 +95,7 @@ message User {
     (db_annotations.db_column_type) = DB_TYPE_VARCHAR
   ];
 }
-\`\`\`
+```
 
 ---
 
@@ -105,35 +105,34 @@ By running the translator, the SQL table statements and Go models are generated 
 
 **Run the Translator Code**:  
 
-\`\`\`go
+```go
 t.GenerateModels("../generated_models", []proto.Message{
     &auth.User{}, 
     &auth.Role{}, 
     &auth.UserRole{},
 })
-\`\`\`
+```
 
 **Generated SQL Table Statement**:  
 
-\`\`\`sql
+```sql
 CREATE TABLE users (
     id INT PRIMARY KEY NOT NULL,
     username VARCHAR(255) UNIQUE,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255)
 );
-\`\`\`
-
+```
 **Generated Go Model**:  
 
-\`\`\`go
+````go
 type User struct {
     ID       int32  `db:"id" json:"id"`
     Username string `db:"username" json:"username"`
     Email    string `db:"email" json:"email"`
     Password string `db:"password" json:"password"`
 }
-\`\`\`
+```
 
 ---
 
@@ -143,7 +142,7 @@ The translator also generates a skeleton gRPC server implementation to handle CR
 
 **Generated gRPC Server Code**:  
 
-\`\`\`go
+```go
 func (s *Server) CreateUser(ctx context.Context, req *auth.User) (*auth.User, error) {
     // Example implementation: Insert into the database
     query := \`INSERT INTO users (username, email, password) VALUES (?, ?, ?)\`
@@ -153,7 +152,7 @@ func (s *Server) CreateUser(ctx context.Context, req *auth.User) (*auth.User, er
     }
     return req, nil
 }
-\`\`\`
+```
 
 ---
 
