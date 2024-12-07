@@ -146,6 +146,7 @@ CREATE TABLE users (
 
 **Generated Go Model**:  
 
+Leverages `xo` library: https://github.com/xo/xo
 ```go
 type User struct {
     ID       int32  `db:"id" json:"id"`
@@ -164,15 +165,7 @@ The translator also generates a skeleton gRPC server implementation to handle CR
 **Generated gRPC Server Code**:  
 
 ```go
-func (s *Server) CreateUser(ctx context.Context, req *auth.User) (*auth.User, error) {
-    // Example implementation: Insert into the database
-    query := \`INSERT INTO users (username, email, password) VALUES (?, ?, ?)\`
-    _, err := s.db.ExecContext(ctx, query, req.Username, req.Email, req.Password)
-    if err != nil {
-        return nil, err
-    }
-    return req, nil
-}
+TBD
 ```
 
 ---
