@@ -1,4 +1,24 @@
 # About
+
+
+This is an example project to show how to use protobuf-db and proto-db-translator. 
+
+1. See the proto/* files for the messages and annotations
+2. Example usage is in generate/main.go
+```go
+func main() {
+	conn := db.DefaultMysqlConnection()
+	conn.DbName = "example_project_proto_db"
+	t := translator.NewTranslator(conn)
+	// .GenerateModels does the following:
+	//   1. Takes each of the protos and generate the SQL create table statement,
+	//   2. Execute the statements to generate all the tables based on the protobuf annotations
+	///  3. With the created SQL tables, generate the Go CRUD models.
+	t.GenerateModels("../generated_models", []proto.Message{&auth.User{}, &auth.Role{}, &auth.UserRole{}})
+}
+```
+
+
 # Automating the Database Code Layer Leveraging Protobuf Annotations and Code Generation  
 
 ---
@@ -123,9 +143,10 @@ CREATE TABLE users (
     password VARCHAR(255)
 );
 ```
+
 **Generated Go Model**:  
 
-````go
+```go
 type User struct {
     ID       int32  `db:"id" json:"id"`
     Username string `db:"username" json:"username"`
@@ -206,22 +227,4 @@ protoc -I . \
        --proto_path=./proto \
        ./proto/auth.proto
 
-```
-
-
-This is an example project to show how to use protobuf-db and proto-db-translator. 
-
-1. See the proto/* files for the messages and annotations
-2. Example usage is in generate/main.go
-```go
-func main() {
-	conn := db.DefaultMysqlConnection()
-	conn.DbName = "example_project_proto_db"
-	t := translator.NewTranslator(conn)
-	// .GenerateModels does the following:
-	//   1. Takes each of the protos and generate the SQL create table statement,
-	//   2. Execute the statements to generate all the tables based on the protobuf annotations
-	///  3. With the created SQL tables, generate the Go CRUD models.
-	t.GenerateModels("../generated_models", []proto.Message{&auth.User{}, &auth.Role{}, &auth.UserRole{}})
-}
 ```
